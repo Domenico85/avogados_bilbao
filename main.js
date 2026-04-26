@@ -6,39 +6,39 @@
 (function () {
   "use strict";
 
-  /* ── 1. CURSOR PERSONALIZADO ── */
+  /* ── 1. CURSOR PERSONALIZADO (solo en dispositivos con ratón) ── */
   const cursor    = document.getElementById("cursor");
   const cursorDot = document.getElementById("cursorDot");
+  const isTouchDevice = window.matchMedia("(hover: none) and (pointer: coarse)").matches;
 
-  let mouseX = 0, mouseY = 0;
-  let cursorX = 0, cursorY = 0;
+  if (!isTouchDevice && cursor && cursorDot) {
+    let mouseX = 0, mouseY = 0;
+    let cursorX = 0, cursorY = 0;
 
-  document.addEventListener("mousemove", (e) => {
-    mouseX = e.clientX;
-    mouseY = e.clientY;
-    // El punto sigue al instante
-    cursorDot.style.left = mouseX + "px";
-    cursorDot.style.top  = mouseY + "px";
-  });
+    document.addEventListener("mousemove", (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+      cursorDot.style.left = mouseX + "px";
+      cursorDot.style.top  = mouseY + "px";
+    });
 
-  // El círculo grande sigue con inercia
-  function animateCursor() {
-    cursorX += (mouseX - cursorX) * 0.12;
-    cursorY += (mouseY - cursorY) * 0.12;
-    cursor.style.left = cursorX + "px";
-    cursor.style.top  = cursorY + "px";
-    requestAnimationFrame(animateCursor);
+    function animateCursor() {
+      cursorX += (mouseX - cursorX) * 0.12;
+      cursorY += (mouseY - cursorY) * 0.12;
+      cursor.style.left = cursorX + "px";
+      cursor.style.top  = cursorY + "px";
+      requestAnimationFrame(animateCursor);
+    }
+    animateCursor();
+
+    const hoverTargets = document.querySelectorAll(
+      "a, button, .servicio-card, .equipo-card, input, select, textarea"
+    );
+    hoverTargets.forEach((el) => {
+      el.addEventListener("mouseenter", () => cursor.classList.add("hover"));
+      el.addEventListener("mouseleave", () => cursor.classList.remove("hover"));
+    });
   }
-  animateCursor();
-
-  // Efecto hover en elementos interactivos
-  const hoverTargets = document.querySelectorAll(
-    "a, button, .servicio-card, .equipo-card, input, select, textarea"
-  );
-  hoverTargets.forEach((el) => {
-    el.addEventListener("mouseenter", () => cursor.classList.add("hover"));
-    el.addEventListener("mouseleave", () => cursor.classList.remove("hover"));
-  });
 
 
   /* ── 2. NAVBAR — scroll y menú móvil ── */

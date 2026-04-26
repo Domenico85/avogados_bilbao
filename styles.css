@@ -39,6 +39,13 @@ body {
   overflow-x: hidden;
 }
 
+@media (hover: none) and (pointer: coarse) {
+  body { cursor: auto; }
+  .cursor, .cursor-dot { display: none; }
+  * { cursor: auto; }
+  a, button, select, input, textarea { cursor: pointer; }
+}
+
 a { text-decoration: none; color: inherit; }
 img { display: block; max-width: 100%; }
 
@@ -157,8 +164,12 @@ img { display: block; max-width: 100%; }
   gap: 6px;
   background: none;
   border: none;
-  cursor: none;
-  padding: 4px;
+  cursor: pointer;
+  padding: 8px;
+  z-index: 1100;
+  position: relative;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
 }
 .nav-toggle span {
   display: block;
