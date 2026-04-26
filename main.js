@@ -7,32 +7,36 @@
   "use strict";
 
   /* ── 1. CURSOR PERSONALIZADO (solo en dispositivos con ratón) ── */
-  const cursor    = document.getElementById("cursor");
+  const cursor = document.getElementById("cursor");
   const cursorDot = document.getElementById("cursorDot");
-  const isTouchDevice = window.matchMedia("(hover: none) and (pointer: coarse)").matches;
+  const isTouchDevice = window.matchMedia(
+    "(hover: none) and (pointer: coarse)",
+  ).matches;
 
   if (!isTouchDevice && cursor && cursorDot) {
-    let mouseX = 0, mouseY = 0;
-    let cursorX = 0, cursorY = 0;
+    let mouseX = 0,
+      mouseY = 0;
+    let cursorX = 0,
+      cursorY = 0;
 
     document.addEventListener("mousemove", (e) => {
       mouseX = e.clientX;
       mouseY = e.clientY;
       cursorDot.style.left = mouseX + "px";
-      cursorDot.style.top  = mouseY + "px";
+      cursorDot.style.top = mouseY + "px";
     });
 
     function animateCursor() {
       cursorX += (mouseX - cursorX) * 0.12;
       cursorY += (mouseY - cursorY) * 0.12;
       cursor.style.left = cursorX + "px";
-      cursor.style.top  = cursorY + "px";
+      cursor.style.top = cursorY + "px";
       requestAnimationFrame(animateCursor);
     }
     animateCursor();
 
     const hoverTargets = document.querySelectorAll(
-      "a, button, .servicio-card, .equipo-card, input, select, textarea"
+      "a, button, .servicio-card, .equipo-card, input, select, textarea",
     );
     hoverTargets.forEach((el) => {
       el.addEventListener("mouseenter", () => cursor.classList.add("hover"));
@@ -40,16 +44,19 @@
     });
   }
 
-
   /* ── 2. NAVBAR — scroll y menú móvil ── */
-  const nav       = document.getElementById("nav");
+  const nav = document.getElementById("nav");
   const navToggle = document.getElementById("navToggle");
-  const navLinks  = document.getElementById("navLinks");
+  const navLinks = document.getElementById("navLinks");
 
   // Añadir clase scrolled al bajar
-  window.addEventListener("scroll", () => {
-    nav.classList.toggle("scrolled", window.scrollY > 40);
-  }, { passive: true });
+  window.addEventListener(
+    "scroll",
+    () => {
+      nav.classList.toggle("scrolled", window.scrollY > 40);
+    },
+    { passive: true },
+  );
 
   // Menú hamburguesa
   navToggle.addEventListener("click", () => {
@@ -66,7 +73,6 @@
     });
   });
 
-
   /* ── 3. SCROLL REVEAL ── */
   const revealObserver = new IntersectionObserver(
     (entries) => {
@@ -81,7 +87,7 @@
         }
       });
     },
-    { threshold: 0.12 }
+    { threshold: 0.12 },
   );
 
   // Asignar delays escalonados a elementos de grids
@@ -114,7 +120,6 @@
     });
   });
 
-
   /* ── 4. CONTADORES ANIMADOS ── */
   function animateCounter(el, target, duration = 1800) {
     const start = performance.now();
@@ -146,12 +151,11 @@
         }
       });
     },
-    { threshold: 0.5 }
+    { threshold: 0.5 },
   );
 
   const statsSection = document.querySelector(".stats");
   if (statsSection) counterObserver.observe(statsSection);
-
 
   /* ── 5. FORMULARIO DE CONTACTO ── */
   const form = document.getElementById("contactForm");
@@ -160,8 +164,8 @@
     form.addEventListener("submit", (e) => {
       e.preventDefault();
 
-      const nombre  = form.querySelector("#nombre").value.trim();
-      const email   = form.querySelector("#email").value.trim();
+      const nombre = form.querySelector("#nombre").value.trim();
+      const email = form.querySelector("#email").value.trim();
       const mensaje = form.querySelector("#mensaje").value.trim();
 
       // Validación básica
@@ -198,7 +202,9 @@
 
   function shakeForm() {
     form.style.animation = "shake 0.4s var(--ease)";
-    form.addEventListener("animationend", () => (form.style.animation = ""), { once: true });
+    form.addEventListener("animationend", () => (form.style.animation = ""), {
+      once: true,
+    });
   }
 
   function highlightField(field) {
@@ -220,19 +226,21 @@
   `;
   document.head.appendChild(styleEl);
 
-
   /* ── 6. PARALLAX SUTIL EN HERO ── */
   const heroBgText = document.querySelector(".hero-bg-text");
 
   if (heroBgText) {
-    window.addEventListener("scroll", () => {
-      const scrollY = window.scrollY;
-      if (scrollY < window.innerHeight) {
-        heroBgText.style.transform = `translateY(calc(-50% + ${scrollY * 0.25}px))`;
-      }
-    }, { passive: true });
+    window.addEventListener(
+      "scroll",
+      () => {
+        const scrollY = window.scrollY;
+        if (scrollY < window.innerHeight) {
+          heroBgText.style.transform = `translateY(calc(-50% + ${scrollY * 0.25}px))`;
+        }
+      },
+      { passive: true },
+    );
   }
-
 
   /* ── 7. SMOOTH SCROLL con OFFSET DE NAV ── */
   document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
@@ -240,24 +248,28 @@
       const target = document.querySelector(anchor.getAttribute("href"));
       if (!target) return;
       e.preventDefault();
-      const navH = parseInt(getComputedStyle(document.documentElement).getPropertyValue("--nav-h"), 10) || 72;
-      const top  = target.getBoundingClientRect().top + window.scrollY - navH;
+      const navH =
+        parseInt(
+          getComputedStyle(document.documentElement).getPropertyValue(
+            "--nav-h",
+          ),
+          10,
+        ) || 72;
+      const top = target.getBoundingClientRect().top + window.scrollY - navH;
       window.scrollTo({ top, behavior: "smooth" });
     });
   });
-
 
   /* ── 8. EFECTO HOVER EN CARDS DE SERVICIO (tilt 3D) ── */
   document.querySelectorAll(".servicio-card").forEach((card) => {
     card.addEventListener("mousemove", (e) => {
       const rect = card.getBoundingClientRect();
-      const x = ((e.clientX - rect.left) / rect.width  - 0.5) * 8;
-      const y = ((e.clientY - rect.top)  / rect.height - 0.5) * -8;
+      const x = ((e.clientX - rect.left) / rect.width - 0.5) * 8;
+      const y = ((e.clientY - rect.top) / rect.height - 0.5) * -8;
       card.style.transform = `perspective(600px) rotateY(${x}deg) rotateX(${y}deg)`;
     });
     card.addEventListener("mouseleave", () => {
       card.style.transform = "";
     });
   });
-
 })();
